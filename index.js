@@ -7,8 +7,9 @@ const init = async () => {
         host: 'localhost'
     });
 
-    server.route(routes);
+    require('./db');
 
+    server.route(routes);
     await server.start();
     console.log('Server runing on %s', server.info.uri);
 }
