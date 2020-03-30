@@ -1,7 +1,6 @@
 const Boom = require('@hapi/boom');
 const UserModel = require('../models/user.model');
 const { SignupSchema, LoginSchema } = require('../schemas/user.schema');
-const validSchema = require('../tools/validSchema');
 const bcrypt = require('bcrypt');
 const { createJWT } = require('../tools/jwt');
 

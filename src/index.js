@@ -1,12 +1,22 @@
 const Happi = require('@hapi/hapi');
 const routes = require('./routes');
-const { validate } = require('./tools/validateUser');
+const { validate } = require('./tools/validate');
 
 const init = async () => {
     const server = new Happi.server(
         {
             port: 3000,
-            host: 'localhost'
+            host: 'localhost',
+            routes: {
+                security: true,
+                cors: {
+                    origin: ['*'],
+                    additionalHeaders: [
+                        'Content-Type',
+                        'Authorization'
+                    ]
+                }
+            }
         }
     );
 
@@ -15,9 +25,9 @@ const init = async () => {
     server.auth.strategy('jwt', 'jwt', {
         key: 'secret',
         validate,
-        // verifyOptions: {
-        //     algorithms: ['HS256']
-        // }
+        verifyOptions: {
+            algorithms: ['HS256']
+        }
     });
 
 

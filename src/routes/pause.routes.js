@@ -5,9 +5,12 @@ pauseRoutes = [];
 listAll = {
     method: 'GET',
     path: '/pause',
+    config: {
+        auth: false
+    },
     handler: (request, h) => {
-        pauses = PauseController.listAll();
-        return pauses;
+        response = PauseController.listAll();
+        return response;
     }
 }
 
