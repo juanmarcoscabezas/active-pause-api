@@ -24,7 +24,7 @@ module.exports.SignupSchema =  Joi.object({
 
 module.exports.LoginSchema = Joi.object({
     email: Joi.string()
-        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        .email({ minDomainSegments: 2, tlds: { allow: ['com'] } })
         .required(),
 
     password: Joi.string()

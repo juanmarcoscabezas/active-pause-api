@@ -1,7 +1,8 @@
 module.exports = {
     "dev": {
-        "mongoUrl": "",
-        "secret": "my-secret-key",
+        "mongoUrl": "mongodb://localhost:27017/activepause",
+        "secretKey": "my-secret-key",
         "host": "localhost",
+        "port": 3010
     }
 }

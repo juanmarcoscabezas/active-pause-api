@@ -1,8 +1,9 @@
-const Boom = require('@hapi/boom');
 const UserModel = require('../models/user.model');
 const { SignupSchema, LoginSchema } = require('../schemas/user.schema');
 const bcrypt = require('bcrypt');
-const { createJWT } = require('../tools/jwt');
+const { createAccessToken, createRefreshToken } = require('../tools/tokenHandler');
+const BoomError = require('../tools/BoomError');
+const Boom = require('@hapi/boom');
 
 const userController = {};
 
@@ -12,13 +13,13 @@ userController.signup = async (user) => {
 
         if (validation.error) {
             error = validation.error.details[0].message;
-            return Boom.badRequest(error);
+            return BoomError(Boom.badRequest(error));
         }
 
         userExists = await UserModel.findOne({'email': validation.value.email});
 
         if (userExists) {
-            return Boom.badRequest('Email already exists');
+            return BoomError(Boom.badRequest('Email already exists'));
         }
 
         const salt = await bcrypt.genSalt(10);
@@ -28,7 +29,7 @@ userController.signup = async (user) => {
     
         return newUser;
     } catch (error) {
-        return Boom.badRequest(error)
+        return BoomError(Boom.badRequest(error));
     }
 }
 
@@ -37,26 +38,28 @@ userController.login = async (user) => {
         const validation = LoginSchema.validate(user);
         if (validation.error) {
             error = validation.error.details[0].message;
-            return Boom.badRequest(error);
+            return BoomError(Boom.badRequest(error));
         }
 
         userExists = await UserModel.findOne({'email': validation.value.email});
 
         if (!userExists) {
-            return Boom.badRequest('User does not exist');
+            return BoomError(Boom.badRequest('User does not exist'));
         }
         
         const validPassword = await bcrypt.compare(validation.value.password, userExists.password);
 
         if (!validPassword) {
-            return Boom.badRequest('Invalid password');
+            return BoomError(Boom.badRequest('Invalid password'));
         }
 
-        token = createJWT(userExists);
+        
+        accessToken = createAccessToken(userExists);
+        refreshToken = createRefreshToken(userExists);
 
-        return { token };
+        return { accessToken, refreshToken };
     } catch (error) {
-        return Boom.badRequest(error)
+        return BoomError(Boom.badRequest(error));
     }
 }
 
@@ -65,7 +68,7 @@ userController.changePassword = async (user) => {
         // To be implemented
         return "success";
     } catch (error) {
-        return Boom.badRequest(error)
+        return BoomError(Boom.badRequest(error));
     }
 }
 

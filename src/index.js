@@ -1,51 +1,24 @@
-const Happi = require('@hapi/hapi');
-const routes = require('./routes');
-const { validate } = require('./tools/validate');
+const express = require('express');
+const { dev } = require('./config');
 
-const init = async () => {
-    const server = new Happi.server(
-        {
-            port: 3000,
-            host: 'localhost',
-            routes: {
-                security: true,
-                cors: {
-                    origin: ['*'],
-                    additionalHeaders: [
-                        'Content-Type',
-                        'Authorization'
-                    ]
-                }
-            }
-        }
-    );
+// Middlewares
+const morgan = require('morgan');
 
-    await server.register(require('hapi-auth-jwt2'));
+// Requiring DB
+require('./db');
 
-    server.auth.strategy('jwt', 'jwt', {
-        key: 'secret',
-        validate,
-        verifyOptions: {
-            algorithms: ['HS256']
-        }
-    });
+// Starting app
+const app = express();
 
+// Using middlewares
+app.use(morgan('dev'));
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
-    server.auth.default('jwt');
-    
+// Using routes
+app.use('/api', require('./routes'));
 
-
-    require('./db');
-
-    server.route(routes);
-    await server.start();
-    return server;
-}
-
-init()
-.then(server => {
-    console.log('Server runing on %s', server.info.uri);
-})
-.catch(err => {
-    console.log(err);
+// Server listening
+app.listen(dev.port, () => {
+    console.log('App listening on port ' + dev.port);
 });

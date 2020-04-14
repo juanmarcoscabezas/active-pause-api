@@ -1,11 +1,7 @@
-const fs = require('fs');
+const routes = require('express').Router();
+const authRoutes = require('./user.routes');
+const playListRoutes = require('./pause.routes');
 
-let routes = [];
-
-fs.readdirSync(__dirname)
-  .filter(file => file != 'index.js')
-  .forEach(file => {
-    routes = routes.concat(require(`./${file}`))
-  });
+routes.use('/auth', authRoutes);
 
 module.exports = routes;
