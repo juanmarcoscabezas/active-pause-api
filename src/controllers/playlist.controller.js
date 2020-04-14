@@ -1,4 +1,4 @@
-const PauseModel = require('../models/pause.model');
+const PauseModel = require('../models/playlist.model');
 const BoomError = require('../tools/BoomError');
 const Boom = require('@hapi/boom');
 
