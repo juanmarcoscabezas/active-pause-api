@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const playlistSchema = Schema({
+const exerciseSchema = Schema({
     name: {
         type: String,
         required: true
@@ -20,4 +20,4 @@ const playlistSchema = Schema({
     }
 });
 
-module.exports = mongoose.model('Playlist', playlistSchema);
+module.exports = mongoose.model('Exercise', exerciseSchema);

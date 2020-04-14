@@ -1,21 +1,21 @@
-const PauseModel = require('../models/playlist.model');
+const PlaylistModel = require('../models/playlist.model');
 const BoomError = require('../tools/BoomError');
 const Boom = require('@hapi/boom');
 
-pauseController = {};
+playlistController = {};
 
-pauseController.listAll = async () => {
+playlistController.listAll = async () => {
     try {
-        const playLists = await PauseModel.find();
+        const playLists = await PlaylistModel.find();
         return(playLists);
     } catch (error) {
         return BoomError(Boom.badRequest(error));
     }
 }
 
-pauseController.getPause = async (id) => {
+playlistController.getPlaylist = async (id) => {
     try {
-        const playlist = await PauseModel.findById(id);
+        const playlist = await PlaylistModel.findById(id);
         if (!playlist) {
             return BoomError(Boom.notFound('Playlist not found'));
         }
@@ -25,18 +25,18 @@ pauseController.getPause = async (id) => {
     }
 }
 
-pauseController.createPause = async (playlist) => {
+playlistController.createPlaylist = async (playlist) => {
     try {
-        const newPlaylist = PauseModel.create(playlist);
+        const newPlaylist = PlaylistModel.create(playlist);
         return (newPlaylist);   
     } catch (error) {
         return BoomError(Boom.badRequest(error));
     }
 }
 
-pauseController.updatePause = async (id, playlist) => {
+playlistController.updatePlaylist = async (id, playlist) => {
     try {
-        const updatedPlaylist = await PauseModel.findByIdAndUpdate(id, playlist, {new: true});
+        const updatedPlaylist = await PlaylistModel.findByIdAndUpdate(id, playlist, {new: true});
         if (!updatedPlaylist) {
             return BoomError(Boom.notFound('Playlist not found'));
         }
@@ -46,9 +46,9 @@ pauseController.updatePause = async (id, playlist) => {
     }
 }
 
-pauseController.removePause = async (id) => {
+playlistController.removePlaylist = async (id) => {
     try {
-        const removedPlaylist = await PauseModel.findByIdAndDelete(id);
+        const removedPlaylist = await PlaylistModel.findByIdAndDelete(id);
         if (!removedPlaylist) {
             return BoomError(Boom.notFound('Playlist not found'));
         }
@@ -58,4 +58,4 @@ pauseController.removePause = async (id) => {
     }
 }
 
-module.exports = pauseController;
+module.exports = playlistController;

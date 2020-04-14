@@ -10,7 +10,7 @@ module.exports.SignupSchema =  Joi.object({
         .required(),
 
     email: Joi.string()
-        .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        .email({ minDomainSegments: 2, tlds: { allow: ['com'] } })
         .required(),
 
     password: Joi.string()
@@ -20,6 +20,7 @@ module.exports.SignupSchema =  Joi.object({
         .required(),
 
     imageUrl: Joi.string()
+        .optional()
 });
 
 module.exports.LoginSchema = Joi.object({
