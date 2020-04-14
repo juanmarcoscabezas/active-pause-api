@@ -17,6 +17,9 @@ const playlistSchema = Schema({
     },
     imgUrl: {
         type: String
+    },
+    exercises: {
+        type: Array
     }
 });
 

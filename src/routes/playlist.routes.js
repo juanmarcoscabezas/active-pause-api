@@ -27,4 +27,14 @@ playlistRoutes.delete('/:id', async (req, res) => {
     res.send(response);
 });
 
+playlistRoutes.post('/addExercise/:id', async (req, res) => {
+    const response = await PlaylistController.addExercise(req.params.id, req.body);
+    res.send(response);
+});
+
+playlistRoutes.delete('/removeExercise/:id', async (req, res) => {
+    const response = await PlaylistController.removeExercise(req.params.id, req.body);
+    res.send(response);
+});
+
 module.exports = playlistRoutes;

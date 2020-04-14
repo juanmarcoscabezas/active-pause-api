@@ -10,5 +10,8 @@ module.exports.PlaylistSchema =  Joi.object({
         .required(),
 
     imageUrl: Joi.string()
+        .optional(),
+
+    exercises: Joi.array()
         .optional()
 });
