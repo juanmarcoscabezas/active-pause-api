@@ -1,9 +1,12 @@
 const UserModel = require('../models/user.model');
 const { SignupSchema, LoginSchema } = require('../schemas/user.schema');
 const bcrypt = require('bcrypt');
-const { createAccessToken, createRefreshToken } = require('../tools/token.handler');
+const { createAccessToken, createRefreshToken, verifyToken } = require('../tools/token.handler');
 const BoomError = require('../tools/BoomError');
 const Boom = require('@hapi/boom');
+
+const jwt = require('jsonwebtoken');
+const { dev } = require('../config');
 
 const userController = {};
 
@@ -53,14 +56,36 @@ userController.login = async (user) => {
             return BoomError(Boom.badRequest('Invalid password'));
         }
 
-        
-        accessToken = createAccessToken(userExists);
-        refreshToken = createRefreshToken(userExists);
+        const accessToken = createAccessToken(userExists);
+        const refreshToken = createRefreshToken(userExists);
 
         return { accessToken, refreshToken };
     } catch (error) {
         return BoomError(Boom.badRequest(error));
     }
+}
+
+userController.refreshToken = (tokens) => {
+
+    const encodedRefreshToken = tokens.accessToken;
+
+    return jwt.verify(encodedRefreshToken, dev.secretKey, (errorRefreshToken, decodedRefreshToken) => {
+
+        if (decodedRefreshToken) {
+            const accessToken = createAccessToken(decodedRefreshToken);
+            const refreshToken = createAccessToken(decodedRefreshToken);
+            return {accessToken, refreshToken};
+        } else {
+            if (errorRefreshToken.message === 'jwt expired') {
+                const decodedToken = jwt.decode(encodedRefreshToken)
+                const accessToken = createAccessToken(decodedToken);
+                const refreshToken = createRefreshToken(decodedToken);
+                return {accessToken, refreshToken};
+            } else {
+                return BoomError(Boom.forbidden('Invalid refresh token'));
+            }
+        }
+    });
 }
 
 userController.changePassword = async (user) => {

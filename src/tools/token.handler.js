@@ -31,7 +31,7 @@ tokenHandler.createRefreshToken = (user) => {
     );
 }
 
-tokenHandler.verifyAccessToken = (token) => {
+tokenHandler.verifyToken = (token) => {
     return jwt.verify(
         token,
         dev.secretKey
