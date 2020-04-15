@@ -1,7 +1,7 @@
 const UserModel = require('../models/user.model');
 const { SignupSchema, LoginSchema } = require('../schemas/user.schema');
 const bcrypt = require('bcrypt');
-const { createAccessToken, createRefreshToken } = require('../tools/tokenHandler');
+const { createAccessToken, createRefreshToken } = require('../tools/token.handler');
 const BoomError = require('../tools/BoomError');
 const Boom = require('@hapi/boom');
 

@@ -1,8 +1,8 @@
 const PlaylistController = require('../controllers/playlist.controller');
-
 const playlistRoutes = require('express').Router();
+const { isAuth } = require('../tools/auth.handler');
 
-playlistRoutes.get('/', async (req, res) => {
+playlistRoutes.get('/', isAuth, async (req, res) => {
     response = await PlaylistController.listAll();
     res.send(response);
 });

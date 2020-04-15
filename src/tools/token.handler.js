@@ -12,7 +12,7 @@ tokenHandler.createAccessToken = (user) => {
         dev.secretKey,
         {
             algorithm: 'HS256',
-            expiresIn: '1h'
+            expiresIn: '1m'
         }
     );
 }
@@ -31,10 +31,12 @@ tokenHandler.createRefreshToken = (user) => {
     );
 }
 
-tokenHandler.verifyToken = (token) => {
-    return jwt.verify(token, dev.secretKey);
+tokenHandler.verifyAccessToken = (token) => {
+    return jwt.verify(
+        token,
+        dev.secretKey
+    );
 }
-
 
 tokenHandler.decodeToken = (token) => {
     return jwt.decode(token);

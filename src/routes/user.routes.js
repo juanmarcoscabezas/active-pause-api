@@ -12,4 +12,9 @@ authRoutes.post('/login', async (req, res) => {
     return res.send(response);
 });
 
+authRoutes.post('/refreshToken', async (req, res) => {
+    console.log('refresh');
+    return res.send('todo bien');
+});
+
 module.exports = authRoutes;
