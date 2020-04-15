@@ -10,10 +10,7 @@ tokenHandler.createAccessToken = (user) => {
             email: user.email
         }, 
         dev.secretKey,
-        {
-            algorithm: 'HS256',
-            expiresIn: '1m'
-        }
+        dev.accessToken
     );
 }
 
@@ -24,10 +21,7 @@ tokenHandler.createRefreshToken = (user) => {
             email: user.email
         }, 
         dev.secretKey,
-        {
-            algorithm: 'HS256',
-            expiresIn: '7d'
-        }
+        dev.refreshToken
     );
 }
 
