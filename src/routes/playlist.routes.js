@@ -2,8 +2,13 @@ const PlaylistController = require('../controllers/playlist.controller');
 const playlistRoutes = require('express').Router();
 const { isAuth } = require('../tools/auth.handler');
 
+playlistRoutes.get('/top', isAuth, async (req, res) => {
+    response = await PlaylistController.listTop();
+    res.send(response);
+});
+
 playlistRoutes.get('/', isAuth, async (req, res) => {
-    response = await PlaylistController.listAll();
+    response = await PlaylistController.listAll(req);
     res.send(response);
 });
 
@@ -12,8 +17,8 @@ playlistRoutes.get('/:id', isAuth, async (req, res) => {
     res.send(response);
 });
 
-playlistRoutes.post('/', isAuth, async (req, res) => {
-    const response = await PlaylistController.createPlaylist(req.body);
+playlistRoutes.post('/', isAuth, async (req, res) => {   
+    const response = await PlaylistController.createPlaylist(req);
     res.send(response);
 });
 
@@ -23,7 +28,7 @@ playlistRoutes.put('/:id', isAuth, async (req, res) => {
 });
 
 playlistRoutes.delete('/:id', isAuth, async (req, res) => {
-    const response = await PlaylistController.removePlaylist(req.params.id);
+    const response = await PlaylistController.removePlaylist(req);
     res.send(response);
 });
 

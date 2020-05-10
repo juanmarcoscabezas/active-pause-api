@@ -9,6 +9,7 @@ authHandler.isAuth = async (req, res, next) => {
         const accessToken = req.headers.authorization.split(' ')[1];
         const validToken = await verifyToken(accessToken);
         req.userEmail = validToken.email;
+        req.userId = validToken.id;
         next();
     } catch (error) {
         if (error.message === 'jwt expired') {

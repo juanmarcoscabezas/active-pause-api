@@ -20,6 +20,9 @@ const playlistSchema = Schema({
     },
     exercises: {
         type: Array
+    },
+    owner: {
+        type: String
     }
 });
 
